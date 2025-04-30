@@ -33,7 +33,7 @@ class UnoEnvironment:
         self.turn = 0
         self.turn_direction = 1
 
-    def step(self, action):
+    def step(self, action, chosen_colour=None):
         reward = 0
         turn_index = self.turn
 
@@ -80,13 +80,19 @@ class UnoEnvironment:
                 self._next_turn()
                 player_status = 1
             elif played_card[1] == 13:
-                # wild card
-                played_card[0] = np.random.randint(self.NUM_COLOURS)
+                # wild card - choose colour if provided, else random
+                if chosen_colour is not None and 0 <= chosen_colour < self.NUM_COLOURS:
+                    played_card[0] = chosen_colour
+                else:
+                    played_card[0] = np.random.randint(self.NUM_COLOURS)
                 player_status = 1
             elif played_card[1] == 14:
-                # 4+ card
+                # 4+ card - choose colour if provided, else random
                 self.to_draw = 4
-                played_card[0] = np.random.randint(self.NUM_COLOURS)
+                if chosen_colour is not None and 0 <= chosen_colour < self.NUM_COLOURS:
+                    played_card[0] = chosen_colour
+                else:
+                    played_card[0] = np.random.randint(self.NUM_COLOURS)
                 player_status = 1
             else:
                 # play ordinary (0-9) card
