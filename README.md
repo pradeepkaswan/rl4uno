@@ -1,21 +1,90 @@
-# UnoBot
-A reinforcement learning based agent trained to play the card game Uno (https://en.wikipedia.org/wiki/Uno_(card_game)). The project was implemented using Python with various modules for efficient arrays, machine learning and GUIs. Q-learning agents are trained inside the game environment and the resulting model can be analyzed inside a graphical version of the game including AI and human players, as well as a naive baseline algorithm.
-## Training
-To train the Q-model, simply start the train.py file with `python train.py` (to continue training an existing model, run `python train.py path/to/model.h5`). The model architecture and hyperparameters can be adjusted in the *agent.py* file. Further parameters regarding the Q-learning algorithm can be tuned inside the *train.py* file. Periodical model checkpoints (frequency adjustable in *agent.py*) will be saved under *models/\<timestamp>/model-\<epoch>.h5* and a tensorboard-compatible log file will be stored inside a *logs/\<timestamp>* folder.
-## Playing
-To run the game with a GUI, use `python play.py <player1> <player2> ...` and replace player arguments with either "AI", "Human" or "Naive". The AI tag will use the model specified inside the *play.py* file, adjust the model path variable to use a different model. If the AI player plays an illegal move, it will immediately be eliminated from the game. Selecting "Human" will allow the user to decide which moves to play in the game and the naive player will always select the first legal move inside the action space. At least two players have to be specified to start a game but player types can be mixed freely.
-## Color selection
-Players may now choose the next active colour after playing a Wild (type 13, “?”) or Draw-4 (type 14, “4+”) card:
+# Unobot
 
-- Human players are prompted via a colour-selection UI when they play a Wild or Draw-4 (configurable with `HUMAN_COLOUR_SELECTION` in `play.py`).
-- AI players use a simple heuristic—picking the colour they have most of in hand—by default (`AI_COLOUR_SELECTION='heuristic'`), or can be set to pick randomly.
+A modular UNO game environment with reinforcement-learning agents, human interaction, and naive baselines.
 
-To revert to random colour assignment for either player type, set `HUMAN_COLOUR_SELECTION` or `AI_COLOUR_SELECTION` to `'random'`.
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![Pygame](https://img.shields.io/badge/pygame-2.6.1-orange)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-## Restarting the game
-After a round ends, press **R** in the game window to start a new match with the same player types.
-## Library requirements
-- NumPy
-- Keras
-- tensorflow
-- pygame
+Play UNO against: 1) a trained AI model, 2) human players via GUI, or 3) a naive baseline strategy.
+
+## Features
+
+- OpenAI Gym–style `UnoEnvironment` for reinforcement learning.
+- Three player modes:
+  - **AI**: loads a Keras H5 model for policy inference.
+  - **Human**: click-to-play GUI with card and colour selection.
+  - **Naive**: plays the first legal move as a baseline.
+- Wild (`?`) and Draw-4 (`4+`) colour-picker UI for humans.
+- AI colour-choice heuristic (pick the colour you hold most of) or random.
+- In-game restart: press **R** to reset the match with the same players.
+
+## Installation
+
+```bash
+git clone https://github.com/pradeepkaswan/unobot.git
+cd unobot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Play the game
+
+```bash
+python play.py [Player1] [Player2] ...
+```
+
+- Player types: `AI`, `Human`, `Naive` (at least two players required).
+- Example: `python play.py Human AI Naive`
+
+### Training an AI agent
+
+```bash
+python train.py [model_path.h5]
+```
+
+- Customize network in `agent.py`, hyperparameters in `train.py`.
+- Models saved under `models/<timestamp>/`, logs in `logs/<timestamp>/`.
+
+## Configuration
+
+Edit `play.py` constants:
+
+```python
+MODEL_PATH = 'example_model.h5'  # AI model file
+HUMAN_COLOUR_SELECTION = 'prompt'  # 'prompt' or 'random'
+AI_COLOUR_SELECTION = 'heuristic'  # 'heuristic' or 'random'
+```
+
+## Controls
+
+- **Click** cards to play or draw from the stack.
+- **Colour prompt** appears for Wild/Draw-4 when HUMAN_COLOUR_SELECTION='prompt'.
+- **R**: restart game with the same players.
+- Close window or **Ctrl+C** to exit.
+
+## Project Structure
+
+```
+. ├── agent.py         # RL network architecture
+. ├── environment.py   # UnoEnvironment game logic
+. ├── play.py          # Pygame GUI runner
+. ├── train.py         # Training script
+. ├── simulate.py      # CLI self-play simulation
+. ├── renderer.py      # Pygame rendering helpers
+. ├── requirements.txt
+. └── README.md
+```
+
+## Contributing
+
+1. Fork the repo and create a branch (`feat/YourFeature`).
+2. Commit with descriptive messages using Conventional Commits.
+3. Submit a pull request for review.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
