@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Models and logs
+models/
+*.h5
+*.hdf5
+logs/
+
+# TensorBoard
+events.out.tfevents.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS files
+.DS_Store
