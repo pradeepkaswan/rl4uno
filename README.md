@@ -1,4 +1,4 @@
-# Unobot
+# RL4UNO
 
 A modular UNO game environment with reinforcement-learning agents, human interaction, and naive baselines.
 
@@ -22,8 +22,8 @@ Play UNO against: 1) a trained AI model, 2) human players via GUI, or 3) a naive
 ## Installation
 
 ```bash
-git clone https://github.com/pradeepkaswan/unobot.git
-cd unobot
+git clone https://github.com/pradeepkaswan/rl4uno.git
+cd rl4uno
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
